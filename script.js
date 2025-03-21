@@ -105,15 +105,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Buy Stock
     document.getElementById("buyStock").addEventListener("click", function () {
         let stockType = prompt("Enter Stock Type (A or B):").toUpperCase();
+        while(!((["A","B"]).includes(stockType))){
+            stockType = prompt("Enter Stock Type (A or B):").toUpperCase();
+        }
+    
         let quantity = parseInt(prompt("Enter Quantity:")) || 0;
         let costPerShare = parseFloat(prompt("Enter Cost per Share:")) || 0;
         let totalCost = quantity * costPerShare;
+        let currentCPS = document.getElementById(`stock${stockType}Cost`).value
 
         if (cashOnHand >= totalCost) {
             cashOnHand -= totalCost;
             document.getElementById("cashOnHand").value = cashOnHand;
             document.getElementById(`stock${stockType}Qty`).value = parseInt(document.getElementById(`stock${stockType}Qty`).value) + quantity;
-            document.getElementById(`stock${stockType}Cost`).value = costPerShare;
+            if(currentCPS!=0){
+                document.getElementById(`stock${stockType}Cost`).value = (parseInt(document.getElementById(`stock${stockType}Cost`).value)+ costPerShare)/2;
+            }else{
+                document.getElementById(`stock${stockType}Cost`).value = costPerShare;
+            }
             // After purchasing stock, update calculations to refresh the stock dividends
             updateCalculations()
         } else {
@@ -124,6 +133,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Sell Stock
     document.getElementById("sellStock").addEventListener("click", function () {
         let stockType = prompt("Enter Stock Type (A or B):").toUpperCase();
+        while(!((["A","B"]).includes(stockType))){
+            stockType = prompt("Enter Stock Type (A or B):").toUpperCase();
+        }
         let quantity = parseInt(prompt("Enter Quantity:")) || 0;
         let costPerShare = parseFloat(prompt("Enter Selling Price per Share:")) || 0;
         let totalSale = quantity * costPerShare;
@@ -146,12 +158,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if(quantity>0){
             let costPerCoin = parseFloat(prompt("Enter Cost per Coin:")) || 0;
             let totalCost = quantity * costPerCoin;
+            let currentCPC = document.getElementById("goldCost").value;
 
             if (cashOnHand >= totalCost) {
                 cashOnHand -= totalCost;
                 document.getElementById("cashOnHand").value = cashOnHand;
                 document.getElementById("goldQty").value = parseInt(document.getElementById("goldQty").value) + quantity;
-                document.getElementById("goldCost").value = costPerCoin;
+                if(currentCPC!=0){
+                    document.getElementById("goldCost").value = ((parseInt(document.getElementById("goldCost").value))+ costPerCoin)/2;
+                }else{
+                    document.getElementById("goldCost").value = costPerCoin;
+                }
             } else {
                 alert("Not enough cash!");
             }}
@@ -159,18 +176,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Sell Gold
     document.getElementById("sellGold").addEventListener("click", function () {
-        let quantity = parseInt(prompt("Enter Quantity to Sell:")) || 0;
-        if(quantity>0){
-        let costPerCoin = parseFloat(prompt("Enter Selling Price per Coin:")) || 0;
-        let totalSale = quantity * costPerCoin;
+        if(document.getElementById("goldQty").value!=0){
+            let quantity = parseInt(prompt("Enter Quantity to Sell:")) || 0;
+            if(quantity>0){
+            let costPerCoin = parseFloat(prompt("Enter Selling Price per Coin:")) || 0;
+            let totalSale = quantity * costPerCoin;
 
-        if (parseInt(document.getElementById("goldQty").value) >= quantity) {
-            cashOnHand += totalSale;
-            document.getElementById("cashOnHand").value = cashOnHand;
-            document.getElementById("goldQty").value -= quantity;
-        } else {
-            alert("Not enough gold to sell!");
-        }}
+            if (parseInt(document.getElementById("goldQty").value) >= quantity) {
+                cashOnHand += totalSale;
+                document.getElementById("cashOnHand").value = cashOnHand;
+                if((document.getElementById("goldQty").value) == quantity){
+                    document.getElementById("goldCost").value =0;
+                }
+                document.getElementById("goldQty").value -= quantity;
+            } else {
+                alert("Not enough gold to sell!");
+            }
+            }
+        }else{
+            alert("No gold to sell")
+        }
     });
 
 // Buy Trading Cards

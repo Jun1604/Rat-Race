@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get Income Values
         let salary = parseFloat(document.getElementById("salary").value) || 0;
         let spouseSalary = parseFloat(document.getElementById("spouseSalary").value) || 0;
+        let sideGigSalary = parseFloat(document.getElementById("sideGigSalary").value) || 0;
         let stockBQty = parseFloat(document.getElementById("stockBQty").value) || 0;
         let propertyIncome = 0;
 
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("totalPassiveIncome").value = totalPassiveIncome;
 
         // Total Income
-        let totalIncome = salary + spouseSalary + totalPassiveIncome;
+        let totalIncome = salary + spouseSalary + sideGigSalary + totalPassiveIncome;
         document.getElementById("totalIncome").value = totalIncome;
 
         // Get Expenses
@@ -142,22 +143,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Buy Gold
     document.getElementById("buyGold").addEventListener("click", function () {
         let quantity = parseInt(prompt("Enter Quantity of Gold Coins:")) || 0;
-        let costPerCoin = parseFloat(prompt("Enter Cost per Coin:")) || 0;
-        let totalCost = quantity * costPerCoin;
+        if(quantity>0){
+            let costPerCoin = parseFloat(prompt("Enter Cost per Coin:")) || 0;
+            let totalCost = quantity * costPerCoin;
 
-        if (cashOnHand >= totalCost) {
-            cashOnHand -= totalCost;
-            document.getElementById("cashOnHand").value = cashOnHand;
-            document.getElementById("goldQty").value = parseInt(document.getElementById("goldQty").value) + quantity;
-            document.getElementById("goldCost").value = costPerCoin;
-        } else {
-            alert("Not enough cash!");
-        }
+            if (cashOnHand >= totalCost) {
+                cashOnHand -= totalCost;
+                document.getElementById("cashOnHand").value = cashOnHand;
+                document.getElementById("goldQty").value = parseInt(document.getElementById("goldQty").value) + quantity;
+                document.getElementById("goldCost").value = costPerCoin;
+            } else {
+                alert("Not enough cash!");
+            }}
     });
 
     // Sell Gold
     document.getElementById("sellGold").addEventListener("click", function () {
         let quantity = parseInt(prompt("Enter Quantity to Sell:")) || 0;
+        if(quantity>0){
         let costPerCoin = parseFloat(prompt("Enter Selling Price per Coin:")) || 0;
         let totalSale = quantity * costPerCoin;
 
@@ -167,28 +170,30 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("goldQty").value -= quantity;
         } else {
             alert("Not enough gold to sell!");
-        }
+        }}
     });
 
 // Buy Trading Cards
 document.getElementById("buyTradingCards").addEventListener("click", function () {
     let quantity = parseInt(prompt("Enter Quantity of Trading Cards to Buy:")) || 0;
-    let costPerCard = parseFloat(prompt("Enter Cost per Trading Card:")) || 0;
-    let totalCost = quantity * costPerCard;
+    if(quantity>0){
+        let costPerCard = parseFloat(prompt("Enter Cost per Trading Card:")) || 0;
+        let totalCost = quantity * costPerCard;
 
-    if (cashOnHand >= totalCost) {
-        cashOnHand -= totalCost;
-        document.getElementById("cashOnHand").value = cashOnHand;
-        document.getElementById("tradingCardsQty").value = parseInt(document.getElementById("tradingCardsQty").value) + quantity;
-        document.getElementById("tradingCardsCost").value = costPerCard;
-    } else {
-        alert("Not enough cash!");
-    }
+        if (cashOnHand >= totalCost) {
+            cashOnHand -= totalCost;
+            document.getElementById("cashOnHand").value = cashOnHand;
+            document.getElementById("tradingCardsQty").value = parseInt(document.getElementById("tradingCardsQty").value) + quantity;
+            document.getElementById("tradingCardsCost").value = costPerCard;
+        } else {
+            alert("Not enough cash!");
+        }}
 });
 
 // Sell Trading Cards
 document.getElementById("sellTradingCards").addEventListener("click", function () {
     let quantity = parseInt(prompt("Enter Quantity to Sell:")) || 0;
+    if(quantity>0){
     let costPerCard = parseFloat(prompt("Enter Selling Price per Trading Card:")) || 0;
     let totalSale = quantity * costPerCard;
 
@@ -198,6 +203,6 @@ document.getElementById("sellTradingCards").addEventListener("click", function (
         document.getElementById("tradingCardsQty").value -= quantity;
     } else {
         alert("Not enough trading cards to sell!");
-    }
+    }}
  });
 });
